@@ -8,17 +8,6 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
     public Transform BoundaryHolder;
     Boundary playerBoundary;
-    struct Boundary
-    {
-        public float Up, Down, Left, Right;
-        public Boundary (float up, float down, float left, float right)
-        {
-            Up = up;
-            Down = down;
-            Left = left;
-            Right = right;
-        }
-    }
 
     // Start is called before the first frame update
     void Start()
