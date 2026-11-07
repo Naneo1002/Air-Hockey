@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UiManager : MonoBehaviour
 {
@@ -49,5 +50,11 @@ public class UiManager : MonoBehaviour
 
         playerMovement.ResetPosition();
         aiScript.ResetPosition();
+    }
+
+    public void BackToMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("menu");
     }
 }
