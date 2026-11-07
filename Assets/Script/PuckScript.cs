@@ -7,6 +7,8 @@ public class PuckScript : MonoBehaviour
 
     public ScoreScript ScoreScriptInstance;
     public static bool WasGoal { get; private set; }
+    public float MaxSpeed;
+    public AudioManager audioManager;
     private Rigidbody2D rb;
     // Start is called before the first frame update
     void Start()
@@ -23,22 +25,40 @@ public class PuckScript : MonoBehaviour
             {
                 ScoreScriptInstance.Increment(ScoreScript.Score.PlayerScore);
                 WasGoal = true;
-                StartCoroutine(ResetPuck());
+                audioManager.PlayGoal();
+                StartCoroutine(ResetPuck(false));
             }
             else if (other.tag == "PlayerGoal")
             {
                 ScoreScriptInstance.Increment(ScoreScript.Score.AiScore);
                 WasGoal = true;
-                StartCoroutine(ResetPuck());
+                audioManager.PlayGoal();
+                StartCoroutine(ResetPuck(true));
             }
         }
     }
 
-    private IEnumerator ResetPuck()
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        audioManager.PlayPuckCollision();
+    }
+
+    private IEnumerator ResetPuck(bool didAiScore)
     {
         yield return new WaitForSecondsRealtime(1);
         WasGoal = false;
-        rb.velocity = Vector2.zero;
-        rb.position = new Vector2(0, -1.5f);
+        rb.velocity = rb.position =Vector2.zero;
+        if (didAiScore)
+        {
+            rb.position = new Vector2(0, -1);
+        } else
+        {
+            rb.position = new Vector2(0, 1);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, MaxSpeed);
     }
 }
