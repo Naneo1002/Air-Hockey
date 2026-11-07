@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
     bool wasJustClicked = true;
     bool canMove;
     Rigidbody2D rb;
+    Vector2 startingPosition;
     public Transform BoundaryHolder;
     Boundary playerBoundary;
 
@@ -13,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        startingPosition = rb.position;
 
         playerBoundary = new Boundary(
             BoundaryHolder.GetChild(0).position.y,
@@ -55,5 +57,10 @@ public class PlayerMovement : MonoBehaviour
         {
             wasJustClicked = true;
         }
+    }
+
+    public void ResetPosition()
+    {
+        rb.position = startingPosition;
     }
 }
